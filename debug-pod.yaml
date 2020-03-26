@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug-pod
+  labels:
+    app: debug-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: debug-pod
+  template:
+    metadata:
+      labels:
+        app: debug-pod
+    spec:
+      containers:
+      - name: debug-pod
+        image: asia.gcr.io/anz-ex-launchpad-dev-ec347b/alpine:3.6
+        command: ["/bin/sh"]
+        args: ["-c", "sleep 60m; rm -rf /debug"]
+        volumeMounts:
+          - name: debug
+            mountPath: /debug
+      volumes:
+        - name: debug
+          emptyDir: {}
